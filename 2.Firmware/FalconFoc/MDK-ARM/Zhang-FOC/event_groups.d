@@ -1,0 +1,15 @@
+zhang-foc\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c
+zhang-foc\event_groups.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+zhang-foc\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+zhang-foc\event_groups.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+zhang-foc\event_groups.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+zhang-foc\event_groups.o: ../Core/Inc/FreeRTOSConfig.h
+zhang-foc\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+zhang-foc\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+zhang-foc\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+zhang-foc\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+zhang-foc\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+zhang-foc\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+zhang-foc\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+zhang-foc\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
+zhang-foc\event_groups.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h

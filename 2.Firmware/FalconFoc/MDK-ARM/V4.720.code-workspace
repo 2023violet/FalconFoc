@@ -1,0 +1,55 @@
+{
+	"folders": [
+		{
+			"name": "V4.720",
+			"path": "../../../../Smart_car_related_open_source_chip/V4.720"
+		},
+		{
+			"path": "../../../../qq/164293474/FileRecv/TWU/diannengjieli_anhuicaijing/CH32V307VCT6(C车模)"
+		},
+		{
+			"path": "../../../../Smart_car_related_open_source_chip/Open_Source_Online/NUC/NUC_01国赛前/NUC_01_20220818_mend"
+		},
+		{
+			"path": "../../../../浏览器下载/znc/东林寻光/2022_06_14-yyds"
+		},
+		{
+			"path": "../../../../qq/164293474/FileRecv/TWU/华理轻工-咸鱼纵横一队负压电磁软硬件/软件/23-DL1A Distance Demo"
+		},
+		{
+			"path": "../../../../浏览器下载/robomaster/2023湖大代码框架/basic_framework-master"
+		},
+		{
+			"path": "../../../../浏览器下载/quantum-tj-SelfCtrl/STM32G431"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"osg_headfile.h": "c",
+			"zf_stm_systick.h": "c",
+			"zf_eru_dma.h": "c",
+			"zf_eru.h": "c",
+			"headfile.h": "c",
+			"time_pit.h": "c",
+			"zf_common_typedef.h": "c",
+			"include_headfile.h": "c",
+			"include_encoder.h": "c",
+			"isr_config.h": "c",
+			"ui_page.h": "c",
+			"imu660a.h": "c",
+			"beep.h": "c",
+			"include_kalman.h": "c",
+			"zf_common_headfile.h": "c",
+			"include.h": "c",
+			"cmath": "c",
+			"fuzzy_servo.h": "c",
+			"bsp_dwt.h": "c",
+			"controller.h": "c",
+			"usbd_cdc.h": "c",
+			"freertos.h": "c",
+			"memory.h": "c",
+			"arm_math.h": "c",
+			"zf_driver_delay.h": "c"
+		}
+	}
+}
