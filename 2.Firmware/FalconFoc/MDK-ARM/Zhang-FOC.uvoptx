@@ -157,9 +157,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>511</LineNumber>
+          <LineNumber>466</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134262864</Address>
+          <Address>134261332</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -168,12 +168,28 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\MODULES\motor\FOCMotor.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\Zhang_FOC\../MODULES/motor/FOCMotor.c\511</Expression>
+          <Expression>\\\../MODULES/motor/FOCMotor.c\466</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
           <LineNumber>216</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134218428</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>startup_stm32g431xx.s</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\Zhang_FOC\startup_stm32g431xx.s\216</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>511</LineNumber>
           <EnabledFlag>1</EnabledFlag>
           <Address>0</Address>
           <ByteObject>0</ByteObject>
@@ -403,7 +419,7 @@
 
   <Group>
     <GroupName>Application/User/Core</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>

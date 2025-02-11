@@ -40,14 +40,12 @@ static float last_position = 0.0f;
 void RobotCMDInit(void)
 {
     FDCANComm_Init_Config_s config = {
-        .can_config                = {
-            .fdcan_handle          = &hfdcan1,
-            .tx_id                 = 0x101,
-            .rx_id                 = 0x201
-            },
-        .send_data_len             = sizeof(cmd_tx),
-        .recv_data_len             = sizeof(cmd_rx)
-        };
+        .can_config = {
+            .fdcan_handle = &hfdcan1,
+            .tx_id = FDCAN_M3_ID + FC_MOTOR_ID,
+            .rx_id = FDCAN_M3_ID},
+        .send_data_len = sizeof(cmd_tx),
+        .recv_data_len = sizeof(cmd_rx)};
     ins = FDCANCommInit(&config);
 }
 
@@ -61,38 +59,50 @@ void RobotCMDTask(void)
     {
         motor_data.state.Control_Mode = CONTROL_MODE_POSITION_RAMP;
         // 检查当前接收到的位置数据是否与上一次不同
-        if (cmd_rx.cmd_rx_data != last_position)
+        if (cmd_rx.cmd_rx_pos != last_position)
         {
-            motor_data.Controller.input_position = cmd_rx.cmd_rx_data;
-            motor_data.Controller.input_updated  = true;
-            last_position                        = cmd_rx.cmd_rx_data; 
+            motor_data.Controller.input_velocity = cmd_rx.cmd_rx_vel;
+            motor_data.Controller.input_position = cmd_rx.cmd_rx_pos;
+            motor_data.Controller.input_updated = true;
+            last_position = cmd_rx.cmd_rx_pos;
         }
         else
         {
-            motor_data.Controller.input_updated  = false;
+            motor_data.Controller.input_updated = false;
         }
     }
     else if (cmd_rx.cmd_id == CMD_ID_GET_VELOCITY)
     {
         motor_data.state.Control_Mode = CONTROL_MODE_VELOCITY_RAMP;
-        motor_data.Controller.input_velocity = cmd_rx.cmd_rx_data;
+        motor_data.Controller.input_velocity = cmd_rx.cmd_rx_vel;
+        motor_data.Controller.input_position = cmd_rx.cmd_rx_pos;
     }
     else if (cmd_rx.cmd_id == CMD_ID_GET_TORQUE)
     {
-        motor_data.Controller.input_torque = cmd_rx.cmd_rx_data;
+        // motor_data.Controller.input_torque = cmd_rx.cmd_rx_data;
     }
     else if (cmd_rx.cmd_id == CMD_ID_CLEAR_ERRORS)
     {
         motor_data.state.State_Mode = STATE_MODE_IDLE;
         motor_data.state.Fault_State = FAULT_STATE_NORMAL;
     }
+    else if (cmd_rx.cmd_id == CMD_ID_GET_ENALBED)
+    {
+        Foc_Pwm_LowSides();
+    }
+    else if (cmd_rx.cmd_id == CMD_ID_GET_STOP)
+    {
+        Foc_Pwm_LowSides();
+    }
 
-     if (++loop_count >= 2)
-     {
-         loop_count = 0;
+    if (++loop_count >= 2)
+    {
+        loop_count = 0;
 
-		 //自行添加需要发送的内容
-		 cmd_tx.cmd_tx_data = 0.0f;
-		 FDCANCommSend(ins, (void *)&cmd_tx);
+        // 自行添加需要发送的内容
+        cmd_tx.cmd_tx_state = motor_data.state.Fault_State;
+        cmd_tx.cmd_tx_vel = motor_data.components.encoder->vel_estimate_;
+        cmd_tx.cmd_tx_pos = motor_data.components.encoder->pos_estimate_;
+        FDCANCommSend(ins, (void *)&cmd_tx);
     }
 }

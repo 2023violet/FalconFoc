@@ -23,5 +23,6 @@ void Reset_Load(void);                                     // 该函数用于将数组最
 void RGB_SendArray(void);                                  // 发送LED数据
 void RGB_DisplayColor(RGB_Color_TypeDef color);            // 显示指定颜色
 void RGB_DisplayColorById(uint8_t color_id);               // 根据颜色编号显示颜色
+void RGB_DMA_CompleteCallback(void);                       // DMA传输完成后的回调函数
 
 #endif

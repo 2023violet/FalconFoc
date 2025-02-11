@@ -111,6 +111,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   // RGB_DisplayColorById(4);
   RobotInit();
+  MX_USB_Device_Init();
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in cmsis_os2.c) */

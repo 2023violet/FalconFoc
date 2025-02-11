@@ -148,3 +148,13 @@ void RGB_DisplayColorById(uint8_t color_id)
 
     RGB_DisplayColor(color); // 调用显示颜色函数
 }
+
+/**
+ * @brief DMA传输完成后的回调函数
+ *
+ * 此函数在 DMA 数据发送完成后调用，以确保 PWM 输出不会受到干扰。
+ */
+void RGB_DMA_CompleteCallback(void)
+{
+    HAL_TIM_PWM_Stop_DMA(&htim3, TIM_CHANNEL_2); // 停止 DMA PWM 输出
+}

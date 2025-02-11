@@ -61,7 +61,7 @@ FDCANInstance *FDCANRegister(FDCAN_Init_Config_s *config)
   if (!idx)
   {
     FDCANServiceInit(); // 第一次注册,先进行硬件初始化
-    LOGINFO("[bsp_can] CAN Service Init");
+//    LOGINFO("[bsp_can] CAN Service Init");
   }
   if (idx >= FDCAN_MX_REGISTER_CNT) // 超过最大实例数
   {

@@ -11,7 +11,7 @@ MOTOR_DATA motor_data           = {
     },
     .state = {
         .State_Mode             = STATE_MODE_IDLE,              // 电机运行状态
-        .Control_Mode           = CONTROL_MODE_POSITION_RAMP,   // 电机控制模式
+        .Control_Mode           = CONTROL_MODE_POSITION,   // 电机控制模式
         .Sub_State              = SUB_STATE_IDLE,               // 电机主校准状态
         .Cs_State               = CS_STATE_IDLE,                // 电机子校准状态
         .Fault_State            = FAULT_STATE_NORMAL,           // 电机故障状态
@@ -57,7 +57,7 @@ MOTOR_DATA motor_data           = {
         .Ki                     = MOTOR_ID_PID_KI,
         .Kd                     = MOTOR_ID_PID_KD,
         .max_out                = ID_PID_MAX_OUT,
-        .max_iout           = ID_PID_MAX_IOUT,
+        .max_iout               = ID_PID_MAX_IOUT,
     },
     .VelPID                     = {
         // 转速环PID参数
@@ -583,7 +583,7 @@ static void MotorControlTask(MOTOR_DATA *motor)
 
     case CONTROL_MODE_TORQUE: // 力矩闭环（空载时电流小，拿手捏住堵转时电流达到目标电流）
     {
-        SetPIDLimit(motor, 1.5f, CURRENT_PID_MAX_OUT, 0.0f, 0.0f, 0.0f);
+        SetPIDLimit(motor, 2.0f, CURRENT_PID_MAX_OUT, 0.0f, 0.0f, 0.0f);
 
         Theta_ADD(motor->components.encoder);
         motor->components.foc->theta   = motor->components.encoder->elec_angle;
@@ -690,13 +690,13 @@ static void MotorControlTask(MOTOR_DATA *motor)
                 if (motor->state.Control_Mode == CONTROL_MODE_POSITION)
                 {
                     vel_set = PID_Calc(&motor->PosPID, motor->components.encoder->pos_estimate_, motor->Controller.input_position);
-                    vel_set = CLAMP(vel_set, -motor->Controller.vel_limit, +motor->Controller.vel_limit);
+					vel_set = CLAMP(vel_set, -motor->Controller.input_velocity, +motor->Controller.input_velocity);
                 }
                 else if (motor->state.Control_Mode == CONTROL_MODE_VELOCITY)
                 {
                     vel_set = motor->Controller.input_velocity;
+					vel_set = CLAMP(vel_set, -motor->Controller.vel_limit, +motor->Controller.vel_limit);
                 }
-                motor->components.encoder->vel_estimate_ = CLAMP(motor->components.encoder->vel_estimate_, -motor->Controller.vel_limit, +motor->Controller.vel_limit);
                 motor->components.foc->iq_set            = PID_Calc(&motor->VelPID, motor->components.encoder->vel_estimate_, vel_set);
                 motor->components.foc->id_set            = 0.0f;
             }
@@ -710,11 +710,12 @@ static void MotorControlTask(MOTOR_DATA *motor)
                 if (motor->state.Control_Mode == CONTROL_MODE_POSITION_RAMP)
                 {
                     vel_set = PID_Calc(&motor->PosPID, motor->components.encoder->pos_estimate_, motor->Controller.pos_setpoint) + motor->Controller.vel_setpoint;
-                    vel_set = CLAMP(vel_set, -motor->Controller.traj_vel, +motor->Controller.traj_vel);
+                    vel_set = CLAMP(vel_set, -motor->Controller.input_velocity, +motor->Controller.input_velocity);
                 }
                 else if (motor->state.Control_Mode == CONTROL_MODE_VELOCITY_RAMP)
                 {
                     vel_set = motor->Controller.vel_setpoint;
+					vel_set = CLAMP(vel_set, -motor->Controller.vel_limit, +motor->Controller.vel_limit);
                 }
                 motor->components.encoder->vel_estimate_ = CLAMP(motor->components.encoder->vel_estimate_, -motor->Controller.vel_limit, +motor->Controller.vel_limit);
                 motor->components.foc->iq_set            = PID_Calc(&motor->VelPID, motor->components.encoder->vel_estimate_, vel_set) + motor->Controller.torque_setpoint;

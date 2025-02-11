@@ -77,7 +77,7 @@ __attribute__((noreturn)) void StartCustomTask(void const *argument)
     for (;;)
     {
         custom_start = DWT_GetTimeline_ms();
-        RobotCMDTask();
+        //        RobotCMDTask();
         custom_dt = DWT_GetTimeline_ms() - custom_start;
         if (custom_dt > 2)
             LOGERROR("[freeRTOS] DEFAULT Task is being DELAY! dt = [%f]", custom_dt);

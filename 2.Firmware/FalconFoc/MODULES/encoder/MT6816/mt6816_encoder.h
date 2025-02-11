@@ -7,9 +7,6 @@
 #include "BLDCMotor.h"
 #include <stm32g431xx.h>
 
-// SPI句柄定义
-#define MT6816_SPI_Get_HSPI (hspi1) // 获取SPI句柄
-
 // 延时相关定义
 #define MT6816_MAX_DELAY (10) // 延时最大值（单位：毫秒）
 
@@ -17,11 +14,13 @@
 #define MT6816_IN_OUT
 
 #ifdef MT6816_IN_OUT // 外接
+#define MT6816_SPI_Get_HSPI (hspi1) // 获取SPI句柄
 #define MT6816_SPI_CS_L() HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, GPIO_PIN_RESET)
 #define MT6816_SPI_CS_H() HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, GPIO_PIN_SET)
 #else // 内置
-#define MT6816_SPI_CS_L() HAL_GPIO_WritePin(SPI3_CS1_GPIO_Port, SPI3_CS1_Pin, GPIO_PIN_RESET)
-#define MT6816_SPI_CS_H() HAL_GPIO_WritePin(SPI3_CS1_GPIO_Port, SPI3_CS1_Pin, GPIO_PIN_SET)
+#define MT6816_SPI_Get_HSPI (hspi3) // 获取SPI句柄
+#define MT6816_SPI_CS_L() HAL_GPIO_WritePin(SPI3_CS_GPIO_Port, SPI3_CS_Pin, GPIO_PIN_RESET)
+#define MT6816_SPI_CS_H() HAL_GPIO_WritePin(SPI3_CS_GPIO_Port, SPI3_CS_Pin, GPIO_PIN_SET)
 #endif
 
 // MT6816寄存器地址定义

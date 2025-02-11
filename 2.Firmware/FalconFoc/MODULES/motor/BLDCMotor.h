@@ -7,9 +7,9 @@
 #include "mt6816_encoder.h"
 
 // 电机类型
-#define MOTOR_PM3510 0
-#define MOTOR_DJI2312 1
-#define MOTOR_X2216 0
+#define MOTOR_PM3510 1
+#define MOTOR_DJI2312 0
+#define MOTOR_MAD2806 0
 
 #define N_BASE 3.0f               // 3S电池
 #define BATVEL (4.0f * N_BASE)    // 电池电压
@@ -17,7 +17,7 @@
 
 #define PRE_CALIBRATED 1 // 第一次运行时先设置0，上电后校准电机，获取了下面的参数后写在下面；设置为1，则直接使用下面的参数
 
-#if MOTOR_X2216
+#if MOTOR_MAD2806
 // 如果是云台电机则不用相电感
 #if PRE_CALIBRATED
 #define MPTOR_P 7u               // 电机极对数
@@ -86,12 +86,12 @@
 
 #if MOTOR_DJI2312 // 电机类型
 #if PRE_CALIBRATED
-#define MPTOR_P 7u               // 电机极对数
-#define MOTOR_RS 0.125786185f    // 相电阻
-#define MOTOR_LS 2.37391487e-05f // 相电感
-#define MOTOR_FLUX 0.0f          // 磁链
-#define MOTOR_OFFSET 13360       // 电机偏移量
-#define MOTOR_DIRECTION CCW      // 电机方向
+#define MPTOR_P 7u              // 电机极对数
+#define MOTOR_RS 0.135551453f   // 相电阻
+#define MOTOR_LS 2.4615214e-05f // 相电感
+#define MOTOR_FLUX 0.0f         // 磁链
+#define MOTOR_OFFSET 3997       // 电机偏移量
+#define MOTOR_DIRECTION CCW     // 电机方向
 #else
 #define MPTOR_P 0u              // 电机极对数
 #define MOTOR_RS 0.0f           // 相电阻
@@ -153,15 +153,16 @@
 #if MOTOR_PM3510 // 电机类型
 #if PRE_CALIBRATED
 #define MPTOR_P 11u              // 电机极对数
-#define MOTOR_RS 1.72955227f     // 相电阻
-#define MOTOR_LS 0.000661760569f // 相电感
+#define MOTOR_RS 1.73534775f     // 相电阻
+#define MOTOR_LS 0.000646331406f // 相电感
 #define MOTOR_FLUX 0.0f          // 磁链
-#define MOTOR_OFFSET 7963        // 电机偏移量
+#define MOTOR_OFFSET 15004       // 电机偏移量
 #define MOTOR_DIRECTION CW       // 电机方向
 #else
 #define MPTOR_P 0u              // 电机极对数
 #define MOTOR_RS 0.0f           // 相电阻
 #define MOTOR_LS 0.0f           // 相电感
+#define MOTOR_FLUX 0.0f         // 磁链
 #define MOTOR_OFFSET 0.0f       // 电机偏移量
 #define MOTOR_DIRECTION UNKNOWN // 电机方向
 #endif
@@ -169,7 +170,7 @@
 // 电机参数相关定义
 #define MOTOR_INERTIA 0.0001f               // 转动惯量 [A/(turn/s^2)]，含义为电机轴以1转每秒的加速度运转时需要提供的用于加速消耗的电流，需要根据电机轴重量和所带负载来进行调试。
 #define MOTOR_CURRENT_RAMP_RATE 0.001f      // 电流爬升力矩 [Nm/s]
-#define MOTOR_VEL_RAMP_RATE 50.0f           // 转速爬升速度 [(turn/s)/s]
+#define MOTOR_VEL_RAMP_RATE 20.0f           // 转速爬升速度 [(turn/s)/s]
 #define MOTOR_TRAJ_VEL 20.0f                // 梯形轨迹控制模式下最大转速 [turn/s] (设定值应当小于或等于 MOTOR_VEL_LIMIT)
 #define MOTOR_TRAJ_ACCEL 5.0f               // 梯形轨迹控制模式下加速度 [(turn/s)/s]
 #define MOTOR_TRAJ_DECEL 5.0f               // 梯形轨迹控制模式下减速度 [(turn/s)/s]
@@ -181,7 +182,7 @@
 #define MOTOR_CURRENT_CTRL_BANDWIDTH 230.0f // 电流环带宽[rad/s]，范围 (2~60000)
 #define MOTOR_STALL_CURRENT 0.8f            // 堵转电流，电机堵转时的电流
 #define MOTOR_INPUT_CURRENT 0.5f            // 目标电流
-#define MOTOR_INPUT_VELOCITY 10.0f          // 目标转速
+#define MOTOR_INPUT_VELOCITY 0.0f           // 目标转速
 #define MOTOR_INPUT_POSITION 0.0f           // 目标位置
 
 // PID参数
@@ -191,10 +192,10 @@
 #define MOTOR_ID_PID_KP 0.0f
 #define MOTOR_ID_PID_KI 0.0f
 #define MOTOR_ID_PID_KD 0.0f
-#define MOTOR_VEL_PID_KP 0.3f
-#define MOTOR_VEL_PID_KI 0.003f // 不可太大，否则会导致电机激烈抖动，以后想做无感时切换就不顺畅了
+#define MOTOR_VEL_PID_KP 0.12f
+#define MOTOR_VEL_PID_KI 0.0001f // 不可太大，否则会导致电机激烈抖动，以后想做无感时切换就不顺畅了
 #define MOTOR_VEL_PID_KD 0.0f
-#define MOTOR_POS_PID_KP 100.0f // 可以看回正时速度是否快准狠
+#define MOTOR_POS_PID_KP 120.0f // 可以看回正时速度是否快准狠
 #define MOTOR_POS_PID_KI 0.0f
 #define MOTOR_POS_PID_KD 0.0f
 
@@ -212,7 +213,7 @@
 
 // Calib
 #define CURRENT_MAX_CALIB 0.5f // 校准最大电流限制 (如果电机校准的时候顿挫感严重或者动一半就不动了，就需要调大这个值)
-#define VOLTAGE_MAX_CALIB 2.0f // 校准最大电压限制(如果电机校准的时候，电机没有发出“哔”的声音(就像普通电调启动的声音一样)，就需要调大这个值)
+#define VOLTAGE_MAX_CALIB 3.0f // 校准最大电压限制(如果电机校准的时候，电机没有发出“哔”的声音(就像普通电调启动的声音一样)，就需要调大这个值)
 
 #define OFFSET_LUT_NUM 128               // 偏移量LUT数
 #define COGGING_MAP_NUM 3000             // 扇区数
@@ -243,7 +244,7 @@
 
 // 硬件配置
 #define V_REG 1.65f                                                             // ADC参考电压
-#define CURRENT_SHUNT_RES 0.001f                                                // 电流采样电阻
+#define CURRENT_SHUNT_RES 0.02f                                                 // 电流采样电阻
 #define CURRENT_AMP_GAIN 50.0f                                                  // 电流放大倍数
 #define VIN_R1 1000.0f                                                          // 电压采样分压电阻
 #define VIN_R2 10000.0f                                                         // 电压采样分压电阻
